@@ -1,0 +1,12 @@
+---
+
+
+- name: install nginx
+  apt:
+   name="nginx"
+   state=present 
+   update_cache=true
+ 
+
+- name: Config service nginx
+  template: src=default dest=/etc/nginx/sites-enabled/default

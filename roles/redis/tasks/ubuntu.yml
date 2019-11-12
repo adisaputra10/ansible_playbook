@@ -1,0 +1,15 @@
+---
+
+- name: install redis server standalone
+  apt:
+   name="redis-server"
+   state=present 
+   update_cache=true
+ 
+- name: Config  redis
+  template: src=redis.conf.j2 dest=/etc/redis/redis.conf
+
+- name: start redis
+  shell: systemctl restart redis.service
+  ignore_errors: yes
+

@@ -1,0 +1,4 @@
+---
+
+- name: Running Install Java 8
+  apt: name=openjdk-8-jdk-headless state=present update_cache=true

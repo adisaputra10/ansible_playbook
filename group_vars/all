@@ -1,0 +1,43 @@
+---
+hostname: "user-service"
+postgresql_python_library: python-psycopg2
+postgresql_locales:
+  - 'en_US.UTF-8'
+
+redis_ip : "192.168.101.2"
+redis_auth : "password"
+
+mongodb_user_admin_name: siteUserAdmin
+mongodb_user_admin_password: passw0rd
+
+mongodb_root_admin_name: root
+mongodb_root_admin_password: passw0rd
+
+mongodb_net_port: 27017 
+mongodb_ip: 127.0.0.1                          
+
+mysql_hostname:  "192.168.101.2"
+mysql_root_password: "pwd123456"
+
+
+
+prometheus_serviceName: "prometheus"
+prometheus_userId: "prometheus"
+prometheus_groupId: "prometheus"
+prometheus_exec_command: "/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.conf --storage.tsdb.path=/data/prometheus --storage.tsdb.retention=2d"
+prometheus_version: "2.3.2"
+
+
+node_export_serviceName: "node_exporter"
+node_export_userId: "node_exporter"
+node_export_groupId: "node_exporter"
+node_export_exec_command: /usr/local/bin/node_exporter
+node_export_version: 0.16.0
+
+
+
+blackbox_serviceName: "blackbox_exporter"
+blackbox_userId: "blackbox_exporter"
+blackbox_groupId: "blackbox_exporter"
+blackbox_exec_command: /usr/local/bin/blackbox_exporter --config.file /data/blackbox_exporter/blackbox.yml
+blackbox_version: 0.12.0

@@ -1,0 +1,39 @@
+---
+
+- name: create user
+  shell: sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+  ignore_errors: yes
+
+- name: add repository
+  shell: wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+  ignore_errors: yes
+
+- name: Ensure PostgreSQL Python libraries are installed
+  apt: name="{{ postgresql_python_library }}" state=present update_cache=true
+
+- name: install postrgres
+  apt:
+   name="{{ item }}"
+   state=absent 
+   update_cache=true
+  with_items:
+   - postgresql-contrib
+   - postgresql 
+
+- name: Ensure all configured locales are present.
+  locale_gen: "name={{ item }} state=present"
+  with_items: "{{ postgresql_locales }}"
+  register: locale_gen_result
+
+- name: change postgres network binding
+  lineinfile:
+    path: /etc/postgresql/9.5/main/pg_hba.conf
+    regexp: '# listen_addresses'
+    line: "listen_addresses = '*'"  
+
+- name: change postgres network binding
+  lineinfile:
+    path: /etc/postgresql/9.5/main/pg_hba.conf
+    regexp: 'host  all  all 0.0.0.0/0 md5'
+    line: 'host  all  all 0.0.0.0/0 md5'
+

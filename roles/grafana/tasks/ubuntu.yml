@@ -1,0 +1,28 @@
+---
+
+
+- name: add repository 
+  shell: echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+  ignore_errors: yes
+
+- name: add repository rabbitmq
+  shell: wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
+  ignore_errors: yes
+
+- name: install rabbitmq
+  apt:
+   name=rabbitmq-server
+   state=present 
+   update_cache=true
+
+- name: start rabbitmq
+  shell: systemctl enable rabbitmq-server;systemctl start rabbitmq-server
+  ignore_errors: yes
+
+- name: create user rabbitmq
+  shell: rabbitmqctl add_user admin password ;rabbitmqctl set_user_tags admin administrator;rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+  ignore_errors: yes
+
+- name: enable rabbitmq
+  shell: rabbitmqctl add_user admin password ;rabbitmqctl set_user_tags admin administrator;rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+  ignore_errors: yes

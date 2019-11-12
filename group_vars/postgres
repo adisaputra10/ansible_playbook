@@ -1,0 +1,3 @@
+---
+postgresql-contrib : "postgresql-contrib"
+postgresql : "postgresql"

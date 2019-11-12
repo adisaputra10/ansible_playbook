@@ -1,0 +1,16 @@
+[Unit]
+Description={{blackbox_serviceName}}
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ blackbox_userId }}
+Group={{ blackbox_groupId }}
+Restart=always
+RestartSec=2
+StartLimitInterval=0
+Type=simple
+ExecStart={{ blackbox_exec_command }}
+
+[Install]
+WantedBy=multi-user.target
