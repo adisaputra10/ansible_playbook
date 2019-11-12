@@ -3,7 +3,7 @@
 
 
 # ansible
-ansible-playbook -i hosts server.yml ß
+ansible-playbook -i hosts server.yml 
 
 
 # ansible with key and password
