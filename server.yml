@@ -2,4 +2,4 @@
 - name: Hardening with ansible
   hosts: client
   roles:
-     - blackbox_exporter
+     - kubeadm-master

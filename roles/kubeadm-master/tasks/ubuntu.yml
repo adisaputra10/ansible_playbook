@@ -1,0 +1,34 @@
+---
+
+- name: add repository 
+  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+  ignore_errors: yes
+
+
+  
+- name: add repository 
+  shell:  apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+  ignore_errors: yes
+
+
+- name: install kubeadm
+  apt:
+   name="{{ item }}"
+   state=present 
+  with_items:
+   - curl
+   - docker.io
+   - kubeadm 
+
+- name: set hostname
+  shell: swapoff -a;hostnamectl set-hostname master-node
+  ignore_errors: yes
+
+- name: add kubeadm init
+  shell: kubeadm init
+  ignore_errors: yes
+
+
+- name: add kubeadm init
+  shell: mkdir -p $HOME/.kube;cp -i /etc/kubernetes/admin.conf $HOME/.kube/config;chown $(id -u):$(id -g) $HOME/.kube/config
+  ignore_errors: yes
