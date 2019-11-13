@@ -1,0 +1,23 @@
+---
+
+- name: install python tools
+  yum: name={{ item }} state=latest
+  with_items:
+   - epel-release
+   - python-pip
+   - curl
+   - which
+
+- name: add key
+  shell: sudo rpm --import https://packages.confluent.io/rpm/5.3/archive.key
+  ignore_errors: yes
+
+- name: clean
+  shell: sudo yum clean all
+  ignore_errors: yes
+
+
+- name: install python tools
+  yum: name={{ item }} state=latest
+  with_items:
+   - confluent-platform-2.12
