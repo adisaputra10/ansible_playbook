@@ -1,0 +1,7 @@
+ETCD_LISTEN_PEER_URLS="http://{{ etcd_ip }}:2380"
+ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379, http://{{ etcd_ip }}:2379"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ etcd_ip }}:2380"
+ETCD_INITIAL_CLUSTER="etcd0=http://{{ etcd_ip }}:2380,"
+ETCD_ADVERTISE_CLIENT_URLS="http://{{ etcd_ip }}:2379"
+ETCD_INITIAL_CLUSTER_TOKEN="cluster1"
+ETCD_INITIAL_CLUSTER_STATE="new"

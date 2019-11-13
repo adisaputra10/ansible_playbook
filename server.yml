@@ -2,4 +2,4 @@
 - name: Hardening with ansible
   hosts: client
   roles:
-     - kubeadm-master
+     - postgres-patroni

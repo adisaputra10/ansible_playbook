@@ -14,7 +14,7 @@
 - name: install postrgres
   apt:
    name="{{ item }}"
-   state=absent 
+   state=present 
    update_cache=true
   with_items:
    - postgresql-contrib

@@ -1,0 +1,104 @@
+---
+
+- name: Install etcd
+  apt: name="etcd" state=present update_cache=true
+  tags: etcd
+
+- name: Config etcd
+  template: src=etcd.j2 dest=/etc/default/etcd
+  tags: etcd
+
+
+- name: restart etcd
+  shell: systemctl restart etcd
+  ignore_errors: yes
+  tags: etcd
+
+- name: Install haproxy 
+  apt: name="haproxy" state=present update_cache=true
+  tags: haproxy
+
+- name: Config haproxy
+  template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
+  tags: haproxy
+
+- name: restart haproxy
+  shell: systemctl restart haproxy
+  ignore_errors: yes
+  tags: haproxy
+
+
+
+- name: install postrgres
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - postgresql-contrib
+   - postgresql
+   - python3-pip
+   - python3-dev
+   - libpq-dev
+  tags: patroni
+
+- name: update pip
+  shell: sudo -H pip3 install --upgrade pip
+  ignore_errors: yes
+  tags: patroni
+
+- name: update symlink
+  shell: ln -s /usr/lib/postgresql/9.5/bin/* /usr/sbin/
+  ignore_errors: yes
+  tags: patroni
+
+- name: Install psycopg2-binary
+  pip: name="psycopg2-binary"
+  tags: patroni
+
+- name: Install patroni
+  pip: name="patroni"
+  tags: patroni
+
+- name: Install patroni
+  pip: name="python-etcd"
+  tags: patroni
+
+- name: stop postrges
+  shell: systemctl stop postgresql
+  ignore_errors: yes
+  tags: patroni
+
+- name: Creates directory
+  file: 
+    path: "/data/patroni"
+    state: directory
+    owner: "postgres"
+    group: "postgres"
+    mode: 0700
+  tags: patroni
+
+- name: config patroni
+  template:
+    src: "patroni.yml.j2"
+    dest: "/data/patroni/patroni.yml"
+    owner: "postgres"
+    group: "postgres"
+  tags: patroni
+
+- name: Copy systemd init file
+  template:
+    src: init.service.j2
+    dest: /etc/systemd/system/patroni.service
+  notify: systemd_reload
+  tags: patroni
+
+- name: Start prometheus patroni
+  service:
+    name: patroni
+    state: started
+  tags: patroni
+
+- name: finished
+  shell: ls
+  ignore_errors: yes

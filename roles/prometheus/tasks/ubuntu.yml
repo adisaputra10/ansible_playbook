@@ -33,13 +33,7 @@
     path: '/tmp/prometheus-{{ prometheus_version }}.linux-amd64'
     state: absent
 
-- name: Creates directory
-  file: 
-    path: "/data/prometheus/"
-    state: directory
-    owner: "{{prometheus_userId}}"
-    group: "{{prometheus_groupId}}"
-    mode: 0755
+
 
 - name: Creates directory
   file: 

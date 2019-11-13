@@ -41,3 +41,10 @@ blackbox_userId: "blackbox_exporter"
 blackbox_groupId: "blackbox_exporter"
 blackbox_exec_command: /usr/local/bin/blackbox_exporter --config.file /data/blackbox_exporter/blackbox.yml
 blackbox_version: 0.12.0
+
+etcd_ip: "192.168.101.2"
+
+haproxy_ip1: "192.168.101.2"
+haproxy_ip2: "192.168.101.3"
+
+patroni_ip: "192.168.101.2"
