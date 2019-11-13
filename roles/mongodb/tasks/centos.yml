@@ -53,8 +53,8 @@
       roles: "root"
       }
 
-#- name: Config service mongodb
-#  template: src=mongod.conf.j2 dest=/etc/mongod.conf
+- name: Config service mongodb
+  template: src=mongodcentos.conf.j2 dest=/etc/mongod.conf
 
 - name: restart mongodb
   shell: systemctl restart mongod
