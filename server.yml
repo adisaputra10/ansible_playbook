@@ -2,4 +2,4 @@
 - name: Hardening with ansible
   hosts: client
   roles:
-     - postgres-patroni
+     - kafka-confluent

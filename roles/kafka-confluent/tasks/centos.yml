@@ -8,6 +8,10 @@
    - curl
    - which
 
+
+- name: Config config kafka
+  template: src=confluent.repo dest=/etc/yum.repos.d/confluent.repo
+
 - name: add key
   shell: sudo rpm --import https://packages.confluent.io/rpm/5.3/archive.key
   ignore_errors: yes
