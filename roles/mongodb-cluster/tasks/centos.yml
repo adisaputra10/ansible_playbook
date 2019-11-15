@@ -1,0 +1,64 @@
+---
+
+
+- name: Config service nginx
+  template: src=mongocentos.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
+
+
+- name: install mongodb-org
+  yum:
+   name=mongodb-org
+   state=present 
+   update_cache=true
+
+- name: install python tools
+  yum: name={{ item }} state=latest
+  with_items:
+   - epel-release
+   - python-pip
+
+- name: install pymongo
+  pip: name=pymongo state=latest
+
+- name: start mongodb
+  shell: systemctl start mongod
+  ignore_errors: yes
+
+
+- name: create administrative user "{{ mongodb_user_admin_name }}"
+  mongodb_user:
+    database: admin
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    roles: "{{ item.roles }}"
+    login_port: "{{ mongodb_net_port }}"
+  with_items:
+    - {
+      name: "{{ mongodb_user_admin_name }}",
+      password: "{{ mongodb_user_admin_password }}",
+      roles: "userAdminAnyDatabase"
+      }
+
+
+- name: create administrative user "{{ mongodb_root_admin_name }}"
+  mongodb_user:
+    database: admin
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    roles: "{{ item.roles }}"
+    login_port: "{{ mongodb_net_port }}"
+  with_items:
+    - {
+      name: "{{ mongodb_root_admin_name }}",
+      password: "{{ mongodb_root_admin_password }}",
+      roles: "root"
+      }
+
+- name: Config service mongodb
+  template: src=mongodcentos.conf.j2 dest=/etc/mongod.conf
+
+- name: restart mongodb
+  shell: systemctl restart mongod
+  ignore_errors: yes
+  
+

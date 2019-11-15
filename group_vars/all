@@ -48,3 +48,6 @@ haproxy_ip1: "192.168.101.2"
 haproxy_ip2: "192.168.101.3"
 
 patroni_ip: "192.168.101.2"
+
+mongodbcluster_ip2: "10.232.2.15"
+mongodbcluster_ip2: "10.232.2.16"

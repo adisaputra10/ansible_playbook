@@ -1,0 +1,65 @@
+---
+
+- name: Add an apt key mongo
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 0C49F3730359A14518585931BC711F9BA15703C6
+
+- name: add repository mongodb
+  shell: echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+  ignore_errors: yes
+
+- name: install mongodb-org
+  apt:
+   name=mongodb-org
+   state=present 
+   update_cache=true
+
+- name: install python tools
+  apt: name={{ item }} state=latest
+  with_items:
+   - python-pip
+
+- name: install pymongo
+  pip: name=pymongo state=latest
+
+- name: start mongodb
+  shell: systemctl start mongod
+  ignore_errors: yes
+
+
+- name: create administrative user "{{ mongodb_user_admin_name }}"
+  mongodb_user:
+    database: admin
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    roles: "{{ item.roles }}"
+    login_port: "{{ mongodb_net_port }}"
+  with_items:
+    - {
+      name: "{{ mongodb_user_admin_name }}",
+      password: "{{ mongodb_user_admin_password }}",
+      roles: "userAdminAnyDatabase"
+      }
+
+
+- name: create administrative user "{{ mongodb_root_admin_name }}"
+  mongodb_user:
+    database: admin
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    roles: "{{ item.roles }}"
+    login_port: "{{ mongodb_net_port }}"
+  with_items:
+    - {
+      name: "{{ mongodb_root_admin_name }}",
+      password: "{{ mongodb_root_admin_password }}",
+      roles: "root"
+      }
+
+- name: Config service zookeeper
+  template: src=mongod.conf.j2 dest=/etc/mongod.conf
+
+- name: restart mongodb
+  shell: systemctl restart mongod
+  ignore_errors: yes
