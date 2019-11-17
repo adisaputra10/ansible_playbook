@@ -51,3 +51,12 @@ patroni_ip: "192.168.101.2"
 
 mongodbcluster_ip2: "10.232.2.15"
 mongodbcluster_ip2: "10.232.2.16"
+
+
+postgres_db: ""
+postgres_user: "test"
+postgres_password: "password"
+
+openshift_registry_network: "192.168.0.0/16"
+openshift_ip_public: "192.168.101.2"
+openshift_domain_public: "xip.io"

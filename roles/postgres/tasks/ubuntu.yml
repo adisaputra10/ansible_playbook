@@ -41,7 +41,7 @@
   become: true
   become_user: postgres
   postgresql_db:
-    name: acme
+    name: {{ postgres_db }}
     encoding: UTF-8
  
 
@@ -49,10 +49,10 @@
   become: true
   become_user: postgres
   postgresql_user:
-    db: acme
+    db: {{ postgres_db }}
     encrypted: true
-    name: test
-    password: test123
+    name: {{ postgres_user }}
+    password: {{ postgres_password }}
     priv: ALL
     state: present
 
