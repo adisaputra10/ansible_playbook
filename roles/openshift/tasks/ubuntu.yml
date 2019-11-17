@@ -11,13 +11,22 @@
   ignore_errors: yes
 
 
+
+- name: install docker
+  apt:
+   name="{{ item }}"
+   state=absent 
+  with_items:
+   - docker.io
+  
+
 - name: install docker
   apt:
    name="{{ item }}"
    state=present 
   with_items:
    - curl
-   - docker.io
+   - docker-ce
    - wget 
 
 
@@ -37,15 +46,17 @@
   shell: cd /opt/openshift/openshift-origin-client*/ ; mv  oc kubectl  /usr/local/bin/
   ignore_errors: yes
 
-- name: Config service registry docker
-  template: src=daemon.json.j2 dest=/etc/docker/daemon.json
+- name: Config serv
+  shell: 'echo { \"insecure-registries\" : [ \"172.30.0.0/16\" ] } > /etc/docker/daemon.json'
+  ignore_errors: yes
 
-- name: restart docker
-  systemd:
-    name: docker
-    state: restarted
+
+- name: restart
+  shell: systemctl restart docker
+  ignore_errors: yes
+
   
 
-- name: mv oc
-  shell: oc cluster up --routing-suffix={{ openshift_ip_public }}.{{ openshift_domain_public }} --public-hostname={{ openshift_ip_public }}
+- name: create cluster
+  shell: oc cluster up  --public-hostname={{ openshift_ip_public }}
   ignore_errors: yes
