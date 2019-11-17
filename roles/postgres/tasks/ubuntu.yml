@@ -37,3 +37,22 @@
     regexp: 'host  all  all 0.0.0.0/0 md5'
     line: 'host  all  all 0.0.0.0/0 md5'
 
+- name: postgres | create db
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: acme
+    encoding: UTF-8
+ 
+
+- name: postgres | create users
+  become: true
+  become_user: postgres
+  postgresql_user:
+    db: acme
+    encrypted: true
+    name: test
+    password: test123
+    priv: ALL
+    state: present
+
