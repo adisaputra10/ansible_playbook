@@ -1,8 +1,11 @@
 # How to work
-
+Install vagrant and virtualbox
 
 
 # ansible
+git clone https://github.com/adisaputra10/ansible_playbook .
+vagrant up && vagrant ssh 
+cd /vagrant && pip install -r requirement.txt
 ansible-playbook -i hosts server.yml 
 
 
