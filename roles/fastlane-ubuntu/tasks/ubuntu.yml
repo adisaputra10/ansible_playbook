@@ -1,0 +1,9 @@
+---
+
+- name: Install ruby
+  shell: apt-get install -y ruby-full
+  ignore_errors: yes
+
+- name: Install fastlane
+  shell: gem install fastlane -NV
+  ignore_errors: yes
