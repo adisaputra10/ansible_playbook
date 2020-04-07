@@ -6,11 +6,11 @@ Install vagrant and virtualbox
 git clone https://github.com/adisaputra10/ansible_playbook . <br>
 vagrant up && vagrant ssh <br>
 cd /vagrant && pip install -r requirement.txt <br>
-ansible-playbook -i hosts server.yml <br>
+ansible-playbook -i hosts server.yml -e env=ubuntu<br>
 
 
 # ansible with key and password
-ansible-playbook -i hosts server.yml -c ssh --ask-pass
+ansible-playbook -i hosts server.yml -e env=ubuntu -c ssh --ask-pass
 
 
 # login postgres
