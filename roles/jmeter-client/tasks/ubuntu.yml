@@ -10,10 +10,6 @@
   apt:
     update_cache: yes
 
-- name: Upgrade installed packages
-  become: true
-  apt:
-    upgrade: safe
 
 - name: Install utilities
   become: true

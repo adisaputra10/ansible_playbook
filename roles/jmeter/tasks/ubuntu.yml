@@ -10,10 +10,6 @@
   apt:
     update_cache: yes
 
-- name: Upgrade installed packages
-  become: true
-  apt:
-    upgrade: safe
 
 - name: Install utilities
   become: true
@@ -47,6 +43,6 @@
 
  
 - name: Config  jmeter
-  template: src=jmeter.j2 dest=/opt/jmeter.properties
+  template: src=jmeter.j2 dest=/opt/apache-jmeter-{{ jmeter.version }}/bin/jmeter.properties
 
 

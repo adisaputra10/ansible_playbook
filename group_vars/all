@@ -70,7 +70,7 @@ openshift_domain_public: "xip.io"
 
 
 jmeter:
-  version: 3.5
+  version: 5.3
   plugins:
     - https://jmeter-plugins.org/files/packages/jpgc-casutg-2.2.zip
 
