@@ -1,17 +1,49 @@
 ---
 
-- name: install jre 8
+- name: Install aptitude
+  become: true
   apt:
-   name="openjdk-8-jre"
-   state=present 
-   update_cache=true
+    name: aptitude
 
+- name: Update APT package manager repositories cache
+  become: true
+  apt:
+    update_cache: yes
 
-- name: Unarchive a file that needs to be downloaded (added in 2.0)
+- name: Upgrade installed packages
+  become: true
+  apt:
+    upgrade: safe
+
+- name: Install utilities
+  become: true
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ vm.tools }}"
+
+- name: Install Java 8 JRE
+  become: true
+  apt:
+    name: openjdk-8-jre-headless
+
+- name: Install JMeter
   unarchive:
-    src: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.0.tgz
-    dest: /opt/jmeter
+    src: "http://apache.belnet.be/jmeter/binaries/apache-jmeter-{{ jmeter.version }}.tgz"
+    dest: "/opt/"
     remote_src: yes
+
+- name: Install plugins
+  unarchive:
+    src: "{{ item }}"
+    dest: "/opt/apache-jmeter-{{ jmeter.version }}/"
+    remote_src: yes
+  with_items: "{{ jmeter.plugins }}"
+
+- name: Set Java heap size
+  lineinfile:
+    path: "/opt/apache-jmeter-{{ jmeter.version }}/bin/jmeter"
+    regexp: '^HEAP='
+    line: 'HEAP="-Xms{{ java.memory }} -Xmx{{ java.memory }}"'
 
  
 - name: Config  jmeter

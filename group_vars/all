@@ -60,3 +60,31 @@ postgres_password: "password"
 openshift_registry_network: "192.168.0.0/16"
 openshift_ip_public: "192.168.101.2"
 openshift_domain_public: "xip.io"
+
+
+
+
+
+
+
+
+
+jmeter:
+  version: 3.5
+  plugins:
+    - https://jmeter-plugins.org/files/packages/jpgc-casutg-2.2.zip
+
+vm:
+  user: ubuntu
+  client: jmeter-client
+  servers:
+    - jmeter-server1
+    - jmeter-server2
+  tools:
+    - htop
+    - iotop
+    - unzip
+    - vim
+
+java:
+  memory: 512m
