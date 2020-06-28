@@ -85,6 +85,8 @@ vm:
     - iotop
     - unzip
     - vim
+    - openjdk-8-jdk-headless
+    - supervisor
 
 java:
-  memory: 512m
+  memory: 2048m

@@ -22,14 +22,18 @@
   apt:
     name: openjdk-8-jre-headless
 
-- name: Install JMeter
-  unarchive:
-    src: "http://apache.belnet.be/jmeter/binaries/apache-jmeter-{{ jmeter.version }}.tgz"
-    dest: "/opt/"
-    remote_src: yes
+
+- name: Download Jmeter
+  get_url:
+    url: http://apache.belnet.be/jmeter/binaries/apache-jmeter-{{ jmeter.version }}.tgz
+    dest: /opt/apache-jmeter-{{ jmeter.version }}.tgz
 
 - name: move folder jmeter
-  shell: mv /opt/apache-jmeter-{{ jmeter.version }}/ /opt/jmeter
+  shell: cd /opt/ && tar -xzvf apache-jmeter-{{ jmeter.version }}.tgz &&   mv -f /opt/apache-jmeter-{{ jmeter.version }}/ /opt/jmeter
+  ignore_errors: yes
+
+- name: Config  rm_keystore.jks
+  copy: src=rmi_keystore.jks dest=/opt/jmeter/bin/rmi_keystore.jks  
 
 
 - name: Install plugins
@@ -44,9 +48,17 @@
     path: "/opt/jmeter/bin/jmeter"
     regexp: '^HEAP='
     line: 'HEAP="-Xms{{ java.memory }} -Xmx{{ java.memory }}"'
-
  
-- name: Config  jmeter
-  template: src=jmeter.j2 dest=/opt/jmeter/bin/jmeter.properties
 
+- name: Config  run
+  template: src=run.j2 dest=/opt/run-server.sh
+
+
+- name: move folder jmeter
+  shell: chmod +x /opt/run-server.sh
+  ignore_errors: yes
+
+
+- name: Config  supervisor
+  copy: src=jmeter.conf dest=/etc/supervisor/conf.d/jmeter.conf
 
