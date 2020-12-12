@@ -10,3 +10,6 @@
 
 - name: Config service nginx
   template: src=default dest=/etc/nginx/sites-enabled/default
+
+- name: restart nginx
+  shell: systemctl restart nginx
