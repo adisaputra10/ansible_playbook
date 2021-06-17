@@ -1,0 +1,24 @@
+---
+
+
+- name: Download Elasticsearch 
+  get_url:
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch.version }}-amd64.deb
+    dest: ~/elasticsearch-{{ elasticsearch.version }}-amd64.deb
+
+- name: Download Elasticsearch
+  get_url:
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch.version }}-amd64.deb.sha512
+    dest: ~/elasticsearch-{{ elasticsearch.version }}-amd64.deb.sha512
+
+- name: Install elasticseacrh
+  apt:
+     deb: ~/elasticsearch-{{ elasticsearch.version }}-amd64.deb
+
+- name: Restart elasticseacrh
+  shell: sudo systemctl restart elasticsearch.service
+  ignore_errors: yes
+
+
+
+

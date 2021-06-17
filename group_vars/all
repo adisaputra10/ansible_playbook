@@ -63,10 +63,8 @@ openshift_domain_public: "xip.io"
 
 
 
-
-
-
-
+elasticsearch:
+  version: 7.13.1
 
 
 jmeter:

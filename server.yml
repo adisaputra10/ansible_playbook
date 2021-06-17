@@ -2,6 +2,7 @@
 - name: Hardening with ansible
   hosts: client
   roles:
-     - jmeter-slave
+     - filebeat
+
 
 

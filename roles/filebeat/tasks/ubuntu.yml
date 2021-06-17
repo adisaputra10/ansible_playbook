@@ -1,0 +1,20 @@
+---
+
+
+- name: Download Filebeat
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ elasticsearch.version }}-amd64.deb
+    dest: ~/filebeat-{{ elasticsearch.version }}-amd64.deb
+
+
+- name: Install Filebeat
+  apt:
+     deb: ~/filebeat-{{ elasticsearch.version }}-amd64.deb
+
+- name: Restart elasticseacrh
+  shell: sudo systemctl restart filebeat.service
+  ignore_errors: yes
+
+
+
+

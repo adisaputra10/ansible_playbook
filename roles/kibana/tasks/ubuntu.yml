@@ -1,0 +1,20 @@
+---
+
+
+- name: Download Kibana
+  get_url:
+    url: https://artifacts.elastic.co/downloads/kibana/kibana-{{ elasticsearch.version }}-amd64.deb
+    dest: ~/kibana-{{ elasticsearch.version }}-amd64.deb
+
+
+- name: Install Kibana
+  apt:
+     deb: ~/kibana-{{ elasticsearch.version }}-amd64.deb
+
+- name: Restart elasticseacrh
+  shell: sudo systemctl restart kibana.service
+  ignore_errors: yes
+
+
+
+
