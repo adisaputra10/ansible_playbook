@@ -1,4 +1,12 @@
 ---
+
+kibana:
+  ip: 10.168.8.3
+  es_ip: 10.168.8.3
+  es_port: 9200
+filebeat:
+  name: server_master
+
 hostname: "user-service"
 postgresql_python_library: python-psycopg2
 postgresql_locales:

@@ -11,6 +11,11 @@
   apt:
      deb: ~/filebeat-{{ elasticsearch.version }}-amd64.deb
 
+- name: Config filebeat
+  template: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+
+
 - name: Restart elasticseacrh
   shell: sudo systemctl restart filebeat.service
   ignore_errors: yes

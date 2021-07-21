@@ -11,7 +11,10 @@
   apt:
      deb: ~/kibana-{{ elasticsearch.version }}-amd64.deb
 
-- name: Restart elasticseacrh
+- name: Config kibana
+  template: src=kibana.yml dest=/etc/kibana/kibana.yml
+
+- name: Restart kibana
   shell: sudo systemctl restart kibana.service
   ignore_errors: yes
 
