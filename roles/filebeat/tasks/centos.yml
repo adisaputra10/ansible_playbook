@@ -1,7 +1,22 @@
 ---
 
-- name: Running centos
-  apt: name=ssh state=present update_cache=true
+- name: Download Filebeat
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ elasticsearch.version }}-x86_64.rpm
+    dest: ~/filebeat-{{ elasticsearch.version }}-x86_64.rpm
+
+- name: Install Filebeat
+  yum:
+     name:  https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ elasticsearch.version }}-x86_64.rpm
+     state: present
+
+
+- name: Config filebeat
+  template: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+- name: Restart elasticseacrh
+  shell: sudo systemctl restart filebeat.service
+  ignore_errors: yes
 
 
 

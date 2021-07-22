@@ -5,7 +5,7 @@ kibana:
   es_ip: 10.168.8.3
   es_port: 9200
 filebeat:
-  name: server_master
+  name: server_node
 
 hostname: "user-service"
 postgresql_python_library: python-psycopg2
