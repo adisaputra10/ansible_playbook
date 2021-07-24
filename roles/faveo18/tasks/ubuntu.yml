@@ -1,0 +1,142 @@
+---
+- name: Add the user 
+  user:
+    name: www-data
+    group: www-data
+
+- name: Install software-properties-common package to get add-apt-repository command
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - software-properties-common
+   - python-pip
+
+- name: Add specified repository into  
+  apt_repository:
+    validate_certs: no
+    repo: ppa:ondrej/php
+    state: present
+
+
+
+- name: install nginx
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - nginx
+   - curl
+   - git
+   - php7.1
+   - php7.1-gd
+   - php7.1-mysql
+   - php7.1-dom
+   - php7.1-cli
+   - php7.1-json
+   - php7.1-common
+   - php7.1-mbstring
+   - php7.1-opcache
+   - php7.1-readline
+   - php7.1-mcrypt
+   - php7.1-zip
+   - php7.1-imap
+   - php7.1-fpm
+   - php7.1-curl
+   - php7.1-bcmath
+
+- name: install mysql
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - python-mysqldb
+   - mysql-server
+   - libmysqlclient-dev
+   - mlocate
+   - dos2unix
+   - bash-completion
+   - openssl
+   - zip
+   - unzip 
+
+#- name: Download file ioncube
+#  get_url:
+#    url: http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
+#    dest: /tmp/ioncube_loaders_lin_x86-64.tar.gz
+
+- name: Download ioncube
+  shell: wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -P /tmp/
+
+
+- name: Unarchive ioncube
+  unarchive:
+    src: /tmp/ioncube_loaders_lin_x86-64.tar.gz
+    dest: /tmp/
+
+
+#- name: Unarchive a file faveo helpdesk
+#  unarchive:
+#    src: /vagrant/faveo.zip
+#    dest: /opt/
+
+- name: git checkout
+  shell: git clone https://github.com/adisaputra10/faveo-helpdesk.git /opt/faveo-helpdesk/
+
+#- name: Git checkout
+#  git:
+#    repo: 'https://github.com/adisaputra10/faveo-helpdesk.git'
+#    dest: /opt/faveo/faveo-helpdesk
+
+- name: Install the Python MySQLB module
+  pip: name=mysql-python
+
+- name: update mysql root password for all root accounts
+  sudo: yes
+  mysql_user: 
+    name: root 
+    host: "{{ item }}" 
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+  with_items:
+      - "{{ mysql_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost 
+
+- name: create database
+  sudo: yes
+  mysql_db:
+     name: faveo
+     state: present
+     login_user: root
+     login_password: "{{ mysql_root_password }}"
+
+- name: composer
+  shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+  ignore_errors: yes
+
+- name: copy ioncube
+  shell: cp /tmp/ioncube/ioncube_loader_lin_7.1.so /usr/lib/php/20160303 
+
+- name: Config php
+  template: src=fpm_php.ini dest=/etc/php/7.1/fpm/php.ini
+
+- name: Config php
+  template: src=cli_php.ini dest=/etc/php/7.1/cli/php.ini
+
+- name: Config nginx
+  template: src=default dest=/etc/nginx/sites-enabled/default
+
+- name: Config ownership
+  template: src=chmod.sh dest=/tmp/chmod.sh
+
+- name: excute chmod
+  shell: chmod +x /tmp/chmod.sh && /tmp/chmod.sh && systemctl restart php7.1-fpm && systemctl restart nginx
+  ignore_errors: yes

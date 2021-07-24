@@ -24,7 +24,7 @@ mongodb_root_admin_password: passw0rd
 mongodb_net_port: 27017 
 mongodb_ip: 127.0.0.1                          
 
-mysql_hostname:  "192.168.101.2"
+mysql_hostname:  "10.168.8.4"
 mysql_root_password: "pwd123456"
 
 

@@ -1,0 +1,89 @@
+---
+- name: Add the user 
+  user:
+    name: www-data
+    group: www-data
+
+- name: Install software-properties-common package to get add-apt-repository command
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - software-properties-common 
+   - python-software-properties
+
+- name: Add specified repository into  
+  apt_repository:
+    validate_certs: no
+    repo: ppa:ondrej/php
+    state: present
+
+
+
+- name: install nginx
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - nginx
+   - curl
+   - git
+   - php7.0
+   - php7.0-gd
+   - php7.0-mysql
+   - php7.0-dom
+   - php7.0-cli
+   - php7.0-json
+   - php7.0-common
+   - php7.0-mbstring
+   - php7.0-opcache
+   - php7.0-readline
+   - php7.0-mcrypt
+   - php7.0-zip
+   - php7.0-imap
+   - php7.0-fpm
+   - php7.0-curl
+
+- name: install mysql
+  apt:
+   name="{{ item }}"
+   state=present 
+   update_cache=true
+  with_items:
+   - python-mysqldb
+   - mysql-server
+   - libmysqlclient-dev
+   - mlocate
+   - dos2unix
+   - bash-completion
+   - openssl
+   - python-pip 
+
+- name: Git checkout
+  git:
+    repo: 'https://github.com/adisaputra10/faveo-helpdesk.git'
+    dest: /opt/faveo/faveo-helpdesk
+
+- name: Install the Python MySQLB module
+  pip: name=mysql-python
+
+- name: update mysql root password for all root accounts
+  sudo: yes
+  mysql_user: 
+    name: root 
+    host: "{{ item }}" 
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+  with_items:
+      - "{{ mysql_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost 
+- name: composer
+  shell: curl -sS https://getcomposer.org/installer | php && pwd && mv composer.phar /usr/local/bin/composer
+  ignore_errors: yes
