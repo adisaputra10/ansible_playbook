@@ -1,0 +1,14 @@
+---
+
+- name: download helm 3
+  shell: curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 
+  ignore_errors: yes
+
+- name: install helm
+  shell: chmod 700 /tmp/get_helm.sh && /tmp/get_helm.sh
+
+- name: Download ingress
+  shell: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+- name: install ingress
+  shell: helm install ingress-nginx ingress-nginx/ingress-nginx

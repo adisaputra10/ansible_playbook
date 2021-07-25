@@ -27,6 +27,9 @@ mongodb_ip: 127.0.0.1
 mysql_hostname:  "10.168.8.4"
 mysql_root_password: "pwd123456"
 
+kubernetes_ip:  "10.168.8.3"
+kubernetes_token: "abcdef.0123456789abcdef"
+
 
 
 prometheus_serviceName: "prometheus"

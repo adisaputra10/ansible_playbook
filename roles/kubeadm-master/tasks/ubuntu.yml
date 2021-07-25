@@ -1,14 +1,15 @@
 ---
 
-- name: add repository 
-  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
-  ignore_errors: yes
+- name: add Kubernetes apt-key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
 
+- name: add Kubernetes' APT repository
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
 
-  
-- name: add repository 
-  shell:  apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-  ignore_errors: yes
 
 
 - name: install kubeadm
@@ -18,17 +19,30 @@
   with_items:
    - curl
    - docker.io
-   - kubeadm 
+   - kubeadm
+   - kubelet
+   - kubectl
 
 - name: set hostname
   shell: swapoff -a;hostnamectl set-hostname master-node
   ignore_errors: yes
 
-- name: add kubeadm init
-  shell: kubeadm init
-  ignore_errors: yes
-
+#- name: add kubeadm init
+#  shell: kubeadm init
+#  ignore_errors: yes
+- name: initialize the cluster
+  shell: kubeadm init --apiserver-advertise-address={{ kubernetes_ip }} --token={{ kubernetes_token }} --pod-network-cidr=10.244.0.0/16 >> cluster_initialized.txt
+  args:
+    chdir: $HOME
+    creates: cluster_initialized.txt
 
 - name: add kubeadm init
   shell: mkdir -p $HOME/.kube;cp -i /etc/kubernetes/admin.conf $HOME/.kube/config;chown $(id -u):$(id -g) $HOME/.kube/config
   ignore_errors: yes
+
+- name: install Pod network
+  become: yes
+  shell: kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml >> pod_network_setup.txt
+  args:
+    chdir: $HOME
+    creates: pod_network_setup.txt
