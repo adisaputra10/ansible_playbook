@@ -17,3 +17,5 @@ ansible-playbook -i hosts server.yml -e env=ubuntu -c ssh --ask-pass
 
 # login postgres
 psql -h 127.0.0.1 -d acme -U test
+# add label kubernetes
+kubectl lable node nama_node node-role.kubernetes.io/infra="true" --overwrite

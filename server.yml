@@ -2,7 +2,7 @@
 - name: Hardening with ansible
   hosts: client
   roles:
-     - kubeadm-node
+     - kubeadm-master
 
 
 

@@ -19,9 +19,9 @@
   with_items:
    - curl
    - docker.io
-   - kubeadm
-   - kubelet
-   - kubectl
+   - kubeadm={{ kubernetes_versi }}-00
+   - kubelet={{ kubernetes_versi }}-00
+   - kubectl={{ kubernetes_versi }}-00
 
 - name: set hostname
   shell: swapoff -a;hostnamectl set-hostname master-node
@@ -46,3 +46,16 @@
   args:
     chdir: $HOME
     creates: pod_network_setup.txt
+
+- name: Config  redis
+  template: src=ingress.yml dest=/tmp/deploy.yaml
+
+- name: install ingress
+  shell: kubectl apply -f /tmp/deploy.yaml
+
+- name: disable validate
+  shell: kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+
+
+
+  

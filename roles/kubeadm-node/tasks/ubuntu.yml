@@ -19,9 +19,9 @@
   with_items:
    - curl
    - docker.io
-   - kubeadm
-   - kubelet
-   - kubectl
+   - kubeadm={{ kubernetes_versi }}-00
+   - kubelet={{ kubernetes_versi }}-00
+   - kubectl={{ kubernetes_versi }}-00
 
 - name: set hostname
   shell: swapoff -a;hostnamectl set-hostname node-{{ kubernetes_ip }}

@@ -1,8 +1,0 @@
----
-
-- name: Running centos
-  apt: name=ssh state=present update_cache=true
-
-
-
-
