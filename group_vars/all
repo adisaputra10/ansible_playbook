@@ -30,6 +30,7 @@ mysql_root_password: "pwd123456"
 kubernetes_ip:  "10.168.8.3"
 kubernetes_token: "abcdef.0123456789abcdef"
 kubernetes_versi: "1.17.15" 
+kubernertes_nodeip: "10.168.8.4"
 
 
 
