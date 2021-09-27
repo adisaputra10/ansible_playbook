@@ -1,5 +1,10 @@
 ---
 
+
+k3s_version: v1.21.5-rc1
+systemd_dir: /etc/systemd/system/
+k3s_master_ip: 11.168.8.3
+
 kibana:
   ip: 10.168.8.3
   es_ip: 10.168.8.3

@@ -1,8 +1,14 @@
 ---
 - name: Hardening with ansible
-  hosts: client
+  hosts: master
+  become: yes
   roles:
-     - faveo18
+     - k3s/master
 
 
 
+- name: Hardening with ansible
+  hosts: node
+  become: yes
+  roles:
+     - k3s/node
